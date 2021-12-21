@@ -1,0 +1,25 @@
+// Global
+// ------
+* {
+  box-sizing: border-box;
+  outline: none;
+}
+
+html,
+body {
+  @include lato;
+  color: map-get($settings, text-color);
+  font-size: map-get($settings, text-size);
+  background: map-get($settings, bg-color);
+}
+
+main {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: map-get($settings, text-color);
+}

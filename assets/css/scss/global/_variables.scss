@@ -1,0 +1,30 @@
+// Variables
+// ---------
+// Colors
+// ------
+$white: #fff;
+$black: #000;
+$gray: #e7e7e7;
+$gray-dark: #c7bebe;
+$red: #ed6454;
+$red-dark: #d04f4f;
+$green: #68d9a4;
+$blue: #3282f7;
+
+// Settings
+// --------
+$settings: (
+  text-size: 18px,
+  text-color: $black,
+  bg-color: $white,
+);
+
+// Breakpoints
+// -----------
+$breakpoints: (
+  mobile: 576px,
+  tablet: 768px,
+  desktop: 990px,
+  wide: 1300px,
+  _wide: 1500px,
+);

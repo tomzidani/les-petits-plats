@@ -1,0 +1,21 @@
+// Search
+// ------
+.app-search {
+  .search {
+    &__form {
+      .form {
+        &__button {
+          position: absolute;
+          padding: 0;
+          right: 0;
+          top: 50%;
+          margin-right: 15px;
+
+          border: none;
+          background: none;
+          transform: translateY(-50%);
+        }
+      }
+    }
+  }
+}

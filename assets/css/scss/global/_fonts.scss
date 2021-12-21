@@ -1,0 +1,70 @@
+// Fonts
+// -----
+// DM Sans
+// -------
+@font-face {
+  font-family: "DM Sans";
+  src: url("../../../fonts/DMSans/DMSans-Bold.woff2") format("woff2"), url("../../../fonts/DMSans/DMSans-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("../fonts/DMSans/DMSans-Regular.woff2") format("woff2"), url("../../../fonts/DMSans/DMSans-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("../fonts/DMSans/DMSans-Medium.woff2") format("woff2"), url("../../../fonts/DMSans/DMSans-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@mixin dmsans {
+  font-family: "DM Sans";
+  font-weight: normal;
+}
+
+@mixin dmsans--medium {
+  font-family: "DM Sans";
+  font-weight: 500;
+}
+
+@mixin dmsans--bold {
+  font-family: "DM Sans";
+  font-weight: bold;
+}
+
+// Lato
+// ----
+@font-face {
+  font-family: "Lato";
+  src: url("../fonts/Lato/Lato-Bold.woff2") format("woff2"), url("../fonts/Lato/Lato-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lato";
+  src: url("../fonts/Lato/Lato-Regular.woff2") format("woff2"), url("../fonts/Lato/Lato-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@mixin lato {
+  font-family: "Lato";
+  font-weight: normal;
+}
+
+@mixin lato--bold {
+  font-family: "Lato";
+  font-weight: bold;
+}

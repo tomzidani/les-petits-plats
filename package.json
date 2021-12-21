@@ -1,0 +1,12 @@
+{
+  "name": "les-petits-plats",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "sass --watch ./assets/css/scss/main.scss:./assets/css/main.css --no-source-map --style compressed"
+  },
+  "dependencies": {
+    "sass": "^1.45.1"
+  }
+}

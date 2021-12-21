@@ -1,0 +1,25 @@
+// Header
+// ------
+.app-header {
+  padding: 40px 100px 20px 100px;
+
+  .header {
+    &__wrapper {
+      display: flex;
+
+      flex-direction: column;
+      align-items: center;
+    }
+
+    &__logo {
+      margin-bottom: 5px;
+      width: 50px;
+    }
+
+    &__title {
+      @include dmsans--medium;
+      font-size: 36px;
+      color: $red-dark;
+    }
+  }
+}
