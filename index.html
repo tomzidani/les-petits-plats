@@ -19,8 +19,48 @@
       <form class="app-form search__form">
         <div class="form__row">
           <div class="form__element">
-            <input type="text" id="q" name="q" placeholder="Rechercher un ingredient, appareil, ustentiles ou une recette" />
+            <input type="text" class="input--search" id="q" name="q" placeholder="Rechercher un ingredient, appareil, ustentiles ou une recette" />
             <button class="form__button"><img src="./assets/img/icons/search.svg" alt="Rechercher" /></button>
+          </div>
+        </div>
+        <div class="form__row">
+          <!-- Ingredients -->
+          <div class="form__element datalist" data-component="datalist" data-type="ingredients">
+            <div class="datalist__wrapper">
+              <input type="text" id="ingredients" name="ingredients" placeholder="Ingrédients" />
+              <div class="datalist__expand" data-action="expand"></div>
+            </div>
+            <div class="datalist__list">
+              <div class="list__wrapper">
+                <li>Ingrédient 1</li>
+              </div>
+            </div>
+          </div>
+
+          <!-- Device -->
+          <div class="form__element datalist" data-component="datalist" data-type="device">
+            <div class="datalist__wrapper">
+              <input type="text" id="device" name="device" placeholder="Appareil" />
+              <div class="datalist__expand" data-action="expand"></div>
+            </div>
+            <div class="datalist__list">
+              <div class="list__wrapper">
+                <li>Appareil 1</li>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ustentils -->
+          <div class="form__element datalist" data-component="datalist" data-type="ustentils">
+            <div class="datalist__wrapper">
+              <input type="text" id="ustentils" name="ustentils" placeholder="Ustentiles" />
+              <div class="datalist__expand" data-action="expand"></div>
+            </div>
+            <div class="datalist__list">
+              <div class="list__wrapper">
+                <li>Ustensile 1</li>
+              </div>
+            </div>
           </div>
         </div>
       </form>

@@ -1,0 +1,96 @@
+// Datalist
+// --------
+.datalist {
+  position: relative;
+  border-radius: 5px;
+  background: $black;
+  max-width: 16.66%;
+
+  transition: ease-in-out 0.2s;
+
+  &__wrapper {
+    display: flex;
+    position: relative;
+
+    align-items: center;
+  }
+
+  &__expand {
+    position: absolute;
+    padding: 0 20px;
+    width: 15px;
+    height: 100%;
+    right: 0;
+    top: 50%;
+
+    background: url("../img/icons/caret.svg") 9px/15px no-repeat;
+    background-position: 12.5px 30.5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    transform: translateY(-50%);
+    transition: ease-in-out 0.2s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #ffffff2b;
+    }
+  }
+
+  // List
+  &__list {
+    max-height: 0;
+
+    overflow: hidden;
+    transition: ease-in-out 0.2s;
+
+    .list {
+      &__wrapper {
+        padding: 20px;
+      }
+    }
+
+    // Expand List
+    &.expand {
+      max-height: 500px;
+    }
+  }
+
+  input {
+    padding: 25px 20px;
+    width: calc(100% - 20px);
+
+    background: none;
+    border: none;
+    color: $white;
+    @include lato--bold;
+    font-size: 18px;
+
+    &::placeholder {
+      color: $white;
+    }
+  }
+
+  // Expanded
+  &.expanded {
+    max-width: 50%;
+
+    .datalist {
+      &__expand {
+        transform: translateY(-50%) rotate(180deg);
+      }
+    }
+  }
+
+  // Colors
+  &[data-type="ingredients"] {
+    background: $blue;
+  }
+
+  &[data-type="device"] {
+    background: $green;
+  }
+
+  &[data-type="ustentils"] {
+    background: $red;
+  }
+}

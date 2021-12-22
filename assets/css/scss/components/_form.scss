@@ -3,11 +3,23 @@
 .app-form {
   .form {
     &__row {
-      position: relative;
+      display: flex;
       margin-bottom: 15px;
+
+      align-items: center;
 
       &:last-child {
         margin-bottom: 0;
+      }
+    }
+
+    &__element {
+      position: relative;
+      margin-right: 20px;
+      flex: 1;
+
+      &:last-child {
+        margin-right: 0;
       }
     }
   }
