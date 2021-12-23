@@ -2,13 +2,12 @@ import { capitalizeFirstLetter, sortAlphabetically } from "../utils/helpers/form
 import { isInArray } from "../utils/helpers/validation.helpers.js"
 import recipes from "../utils/provider/recipes.js"
 
-class Datalist {
+class DataList {
   constructor(el) {
     this.el = el
     this.type = el.getAttribute("data-type")
 
-    this.data
-    this.list
+    this.list = []
 
     this.opened = false
     this.expanded = false
@@ -17,8 +16,8 @@ class Datalist {
   }
 
   init = async () => {
-    this.data = await this.get()
-    this.list = await this.display()
+    this.data = await this.getData()
+    this.list = await this.displayData()
 
     this.bindEvents()
   }
@@ -26,126 +25,118 @@ class Datalist {
   bindEvents = () => {
     const input = this.el.querySelector("input")
     const expand = this.el.querySelector('[data-action="expand"]')
-    const li = this.el.querySelectorAll("li")
-
-    li.forEach((l) => l.addEventListener("click", console.log))
-
-    input.addEventListener("input", this.search)
-    input.addEventListener("focus", this.focus)
-
-    expand.addEventListener("click", this.expand)
+    const listElements = this.el.querySelectorAll("li")
 
     this.el.addEventListener("search", this.toggleSearch)
+
+    input.addEventListener("input", this.searchData)
+
+    expand.addEventListener("click", this.toggleExpand)
+
+    listElements.forEach((li) => li.addEventListener("click", this.selectListElement))
 
     document.addEventListener("click", this.handleClick)
   }
 
   /*
-   * Get data related to the type of datalist based on recipes
+   * Get the data of the recipes linked to the type of the datalist
    */
-  get = () => {
+  getData = () => {
     return new Promise((resolve) => {
-      let datas = []
+      let data = []
 
       recipes.map((r) => {
-        let data = r[this.type]
+        const val = r[this.type]
 
-        Array.isArray(data)
-          ? data.map((d) =>
-              this.type === "ingredients"
-                ? !isInArray(datas, d.ingredient) && datas.push(capitalizeFirstLetter(d.ingredient))
-                : !isInArray(datas, d) && datas.push(capitalizeFirstLetter(d))
-            )
-          : !isInArray(datas, data) && datas.push(capitalizeFirstLetter(data))
+        Array.isArray(val)
+          ? val.map((v) => {
+              this.type === "ingredients" && (v = v.ingredient)
+              !isInArray(data, v) && data.push(capitalizeFirstLetter(v))
+            })
+          : !isInArray(data, val) && data.push(capitalizeFirstLetter(val))
       })
 
-      resolve(sortAlphabetically(datas))
+      resolve(sortAlphabetically(data))
     })
   }
 
   /*
-   * Inserts data into the DOM
+   * Display the data into the component's DOM
    */
-  display = () => {
+  displayData = () => {
     return new Promise((resolve) => {
       const wrapper = this.el.querySelector("ul")
 
-      this.data.map((d) => (wrapper.innerHTML += `<li tabindex="0">${d}</li>`))
+      this.data.map((d) => (wrapper.innerHTML += `<li>${d}</li>`))
 
       resolve(wrapper.querySelectorAll("li"))
     })
   }
 
   /*
-   * Displays the DOM elements containing the sought value
+   * Hide non-research data
    */
-  search = (e) => {
+  searchData = (e) => {
     const val = e.target.value.toLowerCase()
-    const displayedLi = this.el.querySelectorAll("li.displayed")
+    const hiddenElements = this.el.querySelectorAll("li.hidden")
 
-    displayedLi.forEach((l) => l.classList.remove("displayed"))
+    hiddenElements.forEach((el) => el.classList.remove("hidden"))
 
-    val && this.list.forEach((l) => l.textContent.toLowerCase().includes(val) && l.classList.add("displayed"))
+    if (val.length < 3) return this.toggleOpen(false)
 
-    this.expanded && !val ? this.el.classList.add("empty") : this.el.classList.remove("empty")
+    this.list.forEach((el) => !el.textContent.toLowerCase().includes(val) && el.classList.add("hidden"))
 
     this.el.dispatchEvent(new Event("search"))
   }
 
   /*
-   * Toggle the appearance of the list based on the results
+   * Toggle list expansion state
+   */
+  toggleExpand = () => {
+    this.el.classList.toggle("expanded")
+    this.expanded = !this.expanded
+
+    this.expanded && this.el.dispatchEvent(new Event("expand"))
+  }
+
+  /*
+   * Toggles the state of opening the list
+   */
+  toggleOpen = (state = true) => {
+    const func = state ? "add" : "remove"
+
+    this.el.classList[func]("opened")
+    this.opened = !this.opened
+  }
+
+  /*
+   * Toggles the state of opening the list based on search results
    */
   toggleSearch = () => {
-    const isDisplayedLi = this.el.querySelectorAll("li.displayed").length
+    const hiddenElements = this.el.querySelectorAll("li.hidden")
 
-    isDisplayedLi ? this.open() : this.close()
+    hiddenElements.length < this.list.length && hiddenElements.length != 0 ? this.toggleOpen() : this.toggleOpen(false)
   }
 
   /*
-   * Toggle the appearance of the list based on the focus
-   */
-  focus = () => {
-    const isDisplayedLi = this.el.querySelectorAll("li.displayed").length
-
-    isDisplayedLi && this.open()
-  }
-
-  /*
-   * Open the list
-   */
-  open = (t = "opened") => {
-    this[t] = true
-    this.el.classList.add(t)
-  }
-
-  /*
-   * Close the list
-   */
-  close = (t = "opened") => {
-    this[t] = false
-    this.el.classList.remove(t)
-  }
-
-  /*
-   * Toggle expand the list based on its initial state
-   */
-  expand = () => {
-    const input = this.el.querySelector("input").value
-
-    this.opened && this.close()
-    this.expanded ? this.close("expanded") : this.el.dispatchEvent(new Event("expand")) && this.open("expanded")
-
-    this.expanded && !input ? this.el.classList.add("empty") : this.el.classList.remove("empty")
-  }
-
-  /*
-   * Handle the click when the list is open
+   * Handles the click when the list is open or extended
    */
   handleClick = (e) => {
-    const type = this.opened ? "opened" : "expanded"
+    if ((!this.opened && !this.expanded) || this.el.contains(e.target)) return
 
-    ;(this.opened || this.expanded) && !this.el.contains(e.target) && this.close(type)
+    this.opened && this.toggleOpen(false)
+    this.expanded && this.toggleExpand()
+  }
+
+  /*
+   * Dispatch an event for the creation of a tag
+   */
+  selectListElement = (e) => {
+    const event = new Event("tag")
+    event["tagType"] = this.type
+
+    e.target.dispatchEvent(event)
   }
 }
 
-export default Datalist
+export default DataList

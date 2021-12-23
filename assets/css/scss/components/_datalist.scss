@@ -61,17 +61,23 @@
       list-style: none;
 
       > li {
-        display: none;
         margin-bottom: 10px;
 
+        transition: ease-in-out 0.2s;
         color: $white;
+        cursor: pointer;
+
+        &:hover {
+          opacity: 0.7;
+        }
 
         &:last-child {
           margin-bottom: 0;
         }
 
-        &.displayed {
-          display: block;
+        &.hidden,
+        &.tagged {
+          display: none;
         }
       }
     }

@@ -1,0 +1,50 @@
+// Tag
+// ---
+.tag {
+  margin-right: 10px;
+
+  border-radius: 5px;
+
+  &__wrapper {
+    display: flex;
+    padding: 10px 20px;
+
+    align-items: center;
+  }
+
+  &__name {
+    margin-right: 13px;
+
+    color: $white;
+    font-size: 14px;
+  }
+
+  &__remove {
+    display: grid;
+    padding: 0;
+
+    place-content: center;
+    border: none;
+    background: none;
+    transition: ease-in-out 0.2s;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  // Colors
+  // ------
+  &[data-type="ingredients"] {
+    background: $blue;
+  }
+
+  &[data-type="appliance"] {
+    background: $green;
+  }
+
+  &[data-type="ustensils"] {
+    background: $red;
+  }
+}
