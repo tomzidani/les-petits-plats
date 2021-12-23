@@ -17,5 +17,18 @@
         }
       }
     }
+
+    &__list {
+      @include columns-wrapper;
+      margin-top: 25px;
+
+      align-items: stretch;
+
+      .recipe-card {
+        margin-bottom: 50px;
+
+        @include columns-span(4);
+      }
+    }
   }
 }

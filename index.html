@@ -16,6 +16,7 @@
     </header>
 
     <main class="app-search">
+      <!-- Search form -->
       <form class="app-form search__form" onsubmit="(e) => e.preventDefault()">
         <div class="form__row">
           <div class="form__element">
@@ -24,6 +25,7 @@
           </div>
         </div>
 
+        <!-- Tags -->
         <div class="form__row" data-content="tags"></div>
 
         <div class="form__row">
@@ -61,6 +63,9 @@
           </div>
         </div>
       </form>
+
+      <!-- List -->
+      <div class="search__list" data-component="list"></div>
     </main>
 
     <script src="./assets/js/main.js" type="module"></script>

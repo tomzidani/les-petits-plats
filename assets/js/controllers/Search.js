@@ -1,13 +1,13 @@
 import DataList from "../components/Datalist.js"
+import List from "../components/List.js"
 import Tag from "../components/Tag.js"
 import recipes from "../utils/provider/recipes.js"
 
 class Search {
   constructor() {
-    this.recipes = recipes
-
     this.dataLists = []
     this.tags = []
+    this.list = new List()
 
     this.init()
   }

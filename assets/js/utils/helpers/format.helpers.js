@@ -5,3 +5,7 @@ export const capitalizeFirstLetter = (val) => {
 export const sortAlphabetically = (arr) => {
   return arr.sort()
 }
+
+export const tronque = (val) => {
+  return val.slice(0, 180) + "..."
+}

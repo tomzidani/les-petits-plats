@@ -1,0 +1,85 @@
+// Recipe card
+// -----------
+.recipe-card {
+  background: $gray;
+  border-radius: 5px;
+  transition: ease-in-out 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.7;
+    transform: scale(1.01);
+  }
+
+  .card {
+    &__media {
+      min-height: 180px;
+
+      border-top-right-radius: 5px;
+      border-top-left-radius: 5px;
+      background: $gray-dark;
+    }
+
+    &__infos {
+      padding: 20px;
+    }
+
+    &__header {
+      display: flex;
+      margin-bottom: 20px;
+
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    &__title {
+      max-width: 60%;
+    }
+
+    &__time {
+      position: relative;
+      padding-left: 30px;
+
+      @include lato--bold;
+
+      &::before {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        top: 50%;
+        left: 0;
+
+        background: url("../img/icons/clock.svg") 100%/100% no-repeat;
+        transform: translateY(-50%);
+      }
+    }
+
+    &__body {
+      display: flex;
+
+      align-items: baseline;
+      font-size: 12px;
+
+      > div {
+        width: 50%;
+      }
+    }
+
+    &__details {
+      > ul {
+        > li {
+          margin-bottom: 2px;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          > b {
+            @include lato--bold;
+          }
+        }
+      }
+    }
+  }
+}
