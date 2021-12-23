@@ -6,56 +6,79 @@
   background: $black;
   max-width: 16.66%;
 
+  overflow: hidden;
   transition: ease-in-out 0.2s;
 
   &__wrapper {
     display: flex;
     position: relative;
 
-    align-items: center;
+    align-items: stretch;
   }
 
   &__expand {
-    position: absolute;
-    padding: 0 20px;
-    width: 15px;
-    height: 100%;
-    right: 0;
-    top: 50%;
+    position: relative;
+    padding: 25px 20px;
+    width: 40px;
 
-    background: url("../img/icons/caret.svg") 9px/15px no-repeat;
-    background-position: 12.5px 30.5px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
-    transform: translateY(-50%);
     transition: ease-in-out 0.2s;
     cursor: pointer;
+
+    z-index: 1;
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 15px;
+      height: 9px;
+      top: 50%;
+      left: 50%;
+
+      transform: translate(-50%, -50%);
+      background: url("../img/icons/caret.svg") 100%/100% no-repeat;
+      transition: ease-in-out 0.2s;
+    }
 
     &:hover {
       background-color: #ffffff2b;
     }
   }
 
-  // List
   &__list {
-    max-height: 0;
+    position: absolute;
+    top: calc(100% - 3px);
+    width: 100%;
 
     overflow: hidden;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
     transition: ease-in-out 0.2s;
 
-    .list {
-      &__wrapper {
-        padding: 20px;
-      }
-    }
+    ul {
+      padding: 20px;
+      list-style: none;
 
-    // Expand List
-    &.expand {
-      max-height: 500px;
+      > li {
+        display: none;
+        margin-bottom: 10px;
+
+        color: $white;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        &.displayed {
+          display: block;
+        }
+      }
     }
   }
 
   input {
+    position: relative;
     padding: 25px 20px;
     width: calc(100% - 20px);
 
@@ -65,18 +88,45 @@
     @include lato--bold;
     font-size: 18px;
 
+    z-index: 1;
+
     &::placeholder {
       color: $white;
     }
   }
 
-  // Expanded
+  // States
+  &.opened,
   &.expanded {
-    max-width: 50%;
+    overflow: visible;
 
-    .datalist {
-      &__expand {
-        transform: translateY(-50%) rotate(180deg);
+    .datalist__expand::after {
+      transform: translate(-50%, -50%) rotate(180deg);
+    }
+  }
+
+  &.expanded {
+    max-width: 66.66%;
+
+    overflow: visible;
+
+    input::placeholder {
+      opacity: 0.5;
+    }
+
+    ul {
+      @include columns-wrapper;
+
+      > li {
+        @include columns-span(4);
+      }
+    }
+
+    &.empty {
+      ul {
+        > li {
+          display: block;
+        }
       }
     }
   }
@@ -84,13 +134,25 @@
   // Colors
   &[data-type="ingredients"] {
     background: $blue;
+
+    .datalist__list {
+      background: $blue;
+    }
   }
 
-  &[data-type="device"] {
+  &[data-type="appliance"] {
     background: $green;
+
+    .datalist__list {
+      background: $green;
+    }
   }
 
-  &[data-type="ustentils"] {
+  &[data-type="ustensils"] {
     background: $red;
+
+    .datalist__list {
+      background: $red;
+    }
   }
 }

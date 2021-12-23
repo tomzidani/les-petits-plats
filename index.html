@@ -27,43 +27,39 @@
           <!-- Ingredients -->
           <div class="form__element datalist" data-component="datalist" data-type="ingredients">
             <div class="datalist__wrapper">
-              <input type="text" id="ingredients" name="ingredients" placeholder="Ingrédients" />
+              <input type="text" id="ingredients" name="ingredients" placeholder="Ingrédients" autocomplete="off" />
               <div class="datalist__expand" data-action="expand"></div>
             </div>
-            <div class="datalist__list">
-              <div class="list__wrapper">
-                <li>Ingrédient 1</li>
-              </div>
+            <div class="datalist__list" tabindex="0">
+              <ul tabindex="0"></ul>
             </div>
           </div>
 
-          <!-- Device -->
-          <div class="form__element datalist" data-component="datalist" data-type="device">
+          <!-- Appliance -->
+          <div class="form__element datalist" data-component="datalist" data-type="appliance">
             <div class="datalist__wrapper">
-              <input type="text" id="device" name="device" placeholder="Appareil" />
+              <input type="text" id="appliance" name="appliance" placeholder="Appareil" autocomplete="off" />
               <div class="datalist__expand" data-action="expand"></div>
             </div>
-            <div class="datalist__list">
-              <div class="list__wrapper">
-                <li>Appareil 1</li>
-              </div>
+            <div class="datalist__list" tabindex="0">
+              <ul tabindex="0"></ul>
             </div>
           </div>
 
-          <!-- Ustentils -->
-          <div class="form__element datalist" data-component="datalist" data-type="ustentils">
+          <!-- Ustensils -->
+          <div class="form__element datalist" data-component="datalist" data-type="ustensils">
             <div class="datalist__wrapper">
-              <input type="text" id="ustentils" name="ustentils" placeholder="Ustentiles" />
+              <input type="text" id="ustensils" name="ustensils" placeholder="Ustensiles" autocomplete="off" />
               <div class="datalist__expand" data-action="expand"></div>
             </div>
-            <div class="datalist__list">
-              <div class="list__wrapper">
-                <li>Ustensile 1</li>
-              </div>
+            <div class="datalist__list" tabindex="0">
+              <ul tabindex="0"></ul>
             </div>
           </div>
         </div>
       </form>
     </main>
+
+    <script src="./assets/js/main.js" type="module"></script>
   </body>
 </html>
