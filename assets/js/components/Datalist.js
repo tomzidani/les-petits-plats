@@ -1,5 +1,5 @@
 import { capitalizeFirstLetter, sortAlphabetically } from "../utils/helpers/format.helpers.js"
-import { isInArray } from "../utils/helpers/validation.helpers.js"
+import { isPartiallyInArray } from "../utils/helpers/validation.helpers.js"
 import recipes from "../utils/provider/recipes.js"
 
 class DataList {
@@ -45,15 +45,17 @@ class DataList {
     return new Promise((resolve) => {
       let data = []
 
+      console.log(!isPartiallyInArray(["Banane"], "Bananes"))
+
       recipes.map((r) => {
         const val = r[this.type]
 
         Array.isArray(val)
           ? val.map((v) => {
               this.type === "ingredients" && (v = v.ingredient)
-              !isInArray(data, v) && data.push(capitalizeFirstLetter(v))
+              !isPartiallyInArray(data, v) && data.push(capitalizeFirstLetter(v))
             })
-          : !isInArray(data, val) && data.push(capitalizeFirstLetter(val))
+          : !isPartiallyInArray(data, val) && data.push(capitalizeFirstLetter(val))
       })
 
       resolve(sortAlphabetically(data))

@@ -1,5 +1,5 @@
 import { tronque } from "../utils/helpers/format.helpers.js"
-import { isEmpty, isInArray, isInArrayObject } from "../utils/helpers/validation.helpers.js"
+import { isEmpty, isPartiallyInArrayObject, isPartiallyInArray } from "../utils/helpers/validation.helpers.js"
 import recipes from "../utils/provider/recipes.js"
 
 class List {
@@ -28,7 +28,7 @@ class List {
   }
 
   /*
-   *
+   * Refreshes the search based on tags and the main field
    */
   handleSearch = async (e) => {
     const val = e ? e.target.value.toLowerCase() : this.query.toLowerCase()
@@ -37,26 +37,35 @@ class List {
 
     this.query = val
 
-    if (val.length < 3 && !this.tags.length) return
+    if (val.length < 3 && isEmpty(this.tags)) return
 
+    // Query search
     this.currentRecipes = this.currentRecipes.filter(
-      (r) => r.name.toLowerCase().includes(val) || r.description.toLowerCase().includes(val) || isInArrayObject(r.ingredients, val, "ingredient")
+      (r) =>
+        r.name.toLowerCase().includes(val) || r.description.toLowerCase().includes(val) || isPartiallyInArrayObject(r.ingredients, val, "ingredient")
     )
 
+    // Tags search
     this.tags.map((t) => {
       const tVal = t.name.toLowerCase()
       const tType = t.type
 
-      this.currentRecipes = this.currentRecipes.filter((r) =>
-        Array.isArray(r[tType]) ? isInArray(r[tType], tVal) || isInArrayObject(r[tType], tVal, "ingredient") : r[tType].toLowerCase().includes(tVal)
-      )
+      this.currentRecipes = this.currentRecipes.filter((r) => {
+        const rVal = r[tType]
+
+        return Array.isArray(rVal)
+          ? typeof rVal === "object"
+            ? isPartiallyInArrayObject(rVal, tVal, "ingredient")
+            : isPartiallyInArray(rVal, tVal)
+          : rVal.toLowerCase().includes(tVal)
+      })
     })
 
     this.nodeRecipes = await this.displayRecipes()
   }
 
   /*
-   *
+   * Add the tag and refresh the search
    */
   addTag = (tag) => {
     this.tags.push(tag)
@@ -65,7 +74,7 @@ class List {
   }
 
   /*
-   *
+   * Remove the tag and refresh the search
    */
   removeTag = (e) => {
     this.tags = this.tags.filter((t) => t.listEl !== e.target)
@@ -74,7 +83,7 @@ class List {
   }
 
   /*
-   *
+   * Updates DOM results with current recipes
    */
   displayRecipes = () => {
     return new Promise((resolve) => {
@@ -103,7 +112,7 @@ class List {
   }
 
   /*
-   *
+   * Reset recipes and refreshes display
    */
   resetRecipes = async () => {
     this.currentRecipes = this.recipes
@@ -112,12 +121,12 @@ class List {
   }
 
   /*
-   *
+   * Displays a not found message
    */
   displayNotFoundMessage = () => {
     return new Promise((resolve) => {
       let messageEl = `<div class="search__notfound"><div class="notfound__wrapper">`
-      messageEl += `<div class="notfound__header"><h2 class="notfound__title">Aucune recette ne correspond à votre critère..</h2></div>`
+      messageEl += `<div class="notfound__header"><h2 class="notfound__title">Aucune recette ne correspond à vos critères..</h2></div>`
       messageEl += `<div class="notfound__body"><p class="notfound__text">Vous pouvez chercher "tarte aux pommes", "poisson", etc.</p>`
       messageEl += `</div></div></div>`
 

@@ -16,6 +16,14 @@
           transform: translateY(-50%);
         }
       }
+
+      [data-content="tags"] {
+        flex-wrap: wrap;
+
+        .tag {
+          margin-bottom: 10px;
+        }
+      }
     }
 
     &__list {
