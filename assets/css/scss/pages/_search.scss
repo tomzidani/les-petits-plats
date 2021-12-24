@@ -30,5 +30,31 @@
         @include columns-span(4);
       }
     }
+
+    &__notfound {
+      @include columns-span(12);
+
+      text-align: center;
+
+      .notfound {
+        &__wrapper {
+          padding: 100px 0;
+        }
+
+        &__header {
+          margin-bottom: 15px;
+        }
+
+        &__title {
+          @include lato--bold;
+          font-size: 22px;
+        }
+
+        &__text {
+          margin-bottom: 20px;
+          font-size: 14px;
+        }
+      }
+    }
   }
 }

@@ -48,11 +48,12 @@ class Tag {
    */
   removeTag = (e) => {
     e.preventDefault()
+    const event = new Event("deletetag")
 
     this.el.remove()
     this.toggleHide()
 
-    this.listEl.dispatchEvent(new Event("deletetag"))
+    this.listEl.dispatchEvent(event)
   }
 
   /*

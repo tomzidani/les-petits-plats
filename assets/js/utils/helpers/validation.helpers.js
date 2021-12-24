@@ -1,3 +1,7 @@
+export const isEmpty = (val) => {
+  return val == null || val.length === 0
+}
+
 export const isInArray = (arr, val) => {
   return arr.filter((el) => isBetween(val.length - 2, val.length + 2, el) && el.toLowerCase().indexOf(val.toLowerCase()) !== -1).length
 }

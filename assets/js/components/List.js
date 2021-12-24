@@ -1,5 +1,5 @@
 import { tronque } from "../utils/helpers/format.helpers.js"
-import { isInArray, isInArrayObject } from "../utils/helpers/validation.helpers.js"
+import { isEmpty, isInArray, isInArrayObject } from "../utils/helpers/validation.helpers.js"
 import recipes from "../utils/provider/recipes.js"
 
 class List {
@@ -8,6 +8,9 @@ class List {
     this.recipes = recipes
     this.currentRecipes = this.recipes
     this.nodeRecipes = []
+
+    this.query = document.querySelector("input#q").value
+    this.tags = []
 
     this.init()
   }
@@ -27,18 +30,47 @@ class List {
   /*
    *
    */
-  handleSearch = (e) => {
-    const val = e.target.value.toLowerCase()
+  handleSearch = async (e) => {
+    const val = e ? e.target.value.toLowerCase() : this.query.toLowerCase()
 
     this.resetRecipes()
 
-    if (val.length < 3) return
+    this.query = val
 
-    this.currentRecipes = this.recipes.filter(
+    if (val.length < 3 && !this.tags.length) return
+
+    this.currentRecipes = this.currentRecipes.filter(
       (r) => r.name.toLowerCase().includes(val) || r.description.toLowerCase().includes(val) || isInArrayObject(r.ingredients, val, "ingredient")
     )
 
-    this.displayRecipes()
+    this.tags.map((t) => {
+      const tVal = t.name.toLowerCase()
+      const tType = t.type
+
+      this.currentRecipes = this.currentRecipes.filter((r) =>
+        Array.isArray(r[tType]) ? isInArray(r[tType], tVal) || isInArrayObject(r[tType], tVal, "ingredient") : r[tType].toLowerCase().includes(tVal)
+      )
+    })
+
+    this.nodeRecipes = await this.displayRecipes()
+  }
+
+  /*
+   *
+   */
+  addTag = (tag) => {
+    this.tags.push(tag)
+
+    this.handleSearch()
+  }
+
+  /*
+   *
+   */
+  removeTag = (e) => {
+    this.tags = this.tags.filter((t) => t.listEl !== e.target)
+
+    this.handleSearch()
   }
 
   /*
@@ -46,6 +78,8 @@ class List {
    */
   displayRecipes = () => {
     return new Promise((resolve) => {
+      if (isEmpty(this.currentRecipes)) return resolve(this.displayNotFoundMessage() && [])
+
       this.el.innerHTML = ""
 
       this.currentRecipes.map((r) => {
@@ -68,9 +102,27 @@ class List {
     })
   }
 
+  /*
+   *
+   */
   resetRecipes = async () => {
-    this.currentRecipes = recipes
-    await this.displayRecipes()
+    this.currentRecipes = this.recipes
+
+    this.nodeRecipes = await this.displayRecipes()
+  }
+
+  /*
+   *
+   */
+  displayNotFoundMessage = () => {
+    return new Promise((resolve) => {
+      let messageEl = `<div class="search__notfound"><div class="notfound__wrapper">`
+      messageEl += `<div class="notfound__header"><h2 class="notfound__title">Aucune recette ne correspond à votre critère..</h2></div>`
+      messageEl += `<div class="notfound__body"><p class="notfound__text">Vous pouvez chercher "tarte aux pommes", "poisson", etc.</p>`
+      messageEl += `</div></div></div>`
+
+      this.el.innerHTML = messageEl
+    })
   }
 }
 

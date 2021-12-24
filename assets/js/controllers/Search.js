@@ -20,6 +20,7 @@ class Search {
 
   bindEvents = () => {
     this.bindDataListsEvents()
+    this.bindTagsEvents()
   }
 
   /*
@@ -40,10 +41,15 @@ class Search {
    * Bind events of data lists
    */
   bindDataListsEvents = () => {
+    this.dataLists.map((d) => d.el.addEventListener("expand", this.closeExpandedDataLists))
+  }
+
+  /*
+   * Bind events of tags
+   */
+  bindTagsEvents = () => {
     this.dataLists.map((d) => {
       const listElements = d.el.querySelectorAll("li")
-
-      d.el.addEventListener("expand", this.closeExpandedDataLists)
 
       listElements.forEach((l) => {
         l.addEventListener("tag", this.createTag)
@@ -65,6 +71,7 @@ class Search {
   createTag = (e) => {
     const tag = new Tag(e.target.textContent, e.tagType, e.target)
 
+    this.list.addTag(tag)
     this.tags.push(tag)
   }
 
@@ -73,6 +80,7 @@ class Search {
    */
   removeTag = (e) => {
     this.tags = this.tags.filter((t) => t.listEl !== e.target)
+    this.list.removeTag(e)
   }
 }
 
