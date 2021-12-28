@@ -28,7 +28,7 @@ export const isPartiallyInArrayObject = (arr, val, property) => {
   const max = val.length + 2
 
   const result = arr.filter((el) => {
-    el = el[property].toLowerCase()
+    el = typeof el === "object" ? el[property].toLowerCase() : el
 
     if (!isBetween(min, max, el)) return
 

@@ -45,8 +45,6 @@ class DataList {
     return new Promise((resolve) => {
       let data = []
 
-      console.log(!isPartiallyInArray(["Banane"], "Bananes"))
-
       recipes.map((r) => {
         const val = r[this.type]
 
