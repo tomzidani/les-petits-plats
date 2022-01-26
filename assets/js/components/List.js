@@ -40,26 +40,44 @@ class List {
     if (val.length < 3 && isEmpty(this.tags)) return
 
     // Query search
-    this.currentRecipes = this.currentRecipes.filter(
-      (r) =>
-        r.name.toLowerCase().includes(val) || r.description.toLowerCase().includes(val) || isPartiallyInArrayObject(r.ingredients, val, "ingredient")
-    )
+    let results = []
+
+    for (let i = 0; i < this.currentRecipes.length; i++) {
+      const r = this.currentRecipes[i]
+
+      if (
+        r.name.toLowerCase().includes(val) ||
+        r.description.toLowerCase().includes(val) ||
+        isPartiallyInArrayObject(r.ingredients, val, "ingredient")
+      )
+        results.push(r)
+    }
+
+    results = results.length ? results : this.currentRecipes
 
     // Tags search
-    this.tags.map((t) => {
+    for (let i = 0; i < this.tags.length; i++) {
+      const t = this.tags[i]
       const tVal = t.name.toLowerCase()
       const tType = t.type
 
-      this.currentRecipes = this.currentRecipes.filter((r) => {
+      for (let n = 0; n < results.length; n++) {
+        const r = results[n]
         const rVal = r[tType]
 
-        return Array.isArray(rVal)
-          ? typeof rVal === "object"
-            ? isPartiallyInArrayObject(rVal, tVal, "ingredient")
-            : isPartiallyInArray(rVal, tVal)
-          : rVal.toLowerCase().includes(tVal)
-      })
-    })
+        if (Array.isArray(rVal)) {
+          if (typeof rVal === "object") {
+            if (isPartiallyInArrayObject(rVal, tVal, "ingredient")) results.splice(results.indexOf(r))
+          } else {
+            if (isPartiallyInArray(rVal, tVal)) results.splice(results.indexOf(r))
+          }
+        } else {
+          if (rVal.toLowerCase().includes(val)) results.splice(results.indexOf(r))
+        }
+      }
+    }
+
+    this.currentRecipes = results
 
     this.updateDatalists()
 
