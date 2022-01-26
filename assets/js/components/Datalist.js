@@ -1,6 +1,6 @@
 import { capitalizeFirstLetter, sortAlphabetically } from "../utils/helpers/format.helpers.js"
 import { isPartiallyInArray } from "../utils/helpers/validation.helpers.js"
-import recipes from "../utils/provider/recipes.js"
+import jsonRecipes from "../utils/provider/recipes.js"
 
 class DataList {
   constructor(el) {
@@ -26,6 +26,7 @@ class DataList {
     const input = this.el.querySelector("input")
     const expand = this.el.querySelector('[data-action="expand"]')
     const listElements = this.el.querySelectorAll("li")
+    const list = document.querySelector('[data-component="list"]')
 
     this.el.addEventListener("search", this.toggleSearch)
 
@@ -35,13 +36,15 @@ class DataList {
 
     listElements.forEach((li) => li.addEventListener("click", this.selectListElement))
 
+    list.addEventListener("updatelist", this.updateData)
+
     document.addEventListener("click", this.handleClick)
   }
 
   /*
    * Get the data of the recipes linked to the type of the datalist
    */
-  getData = () => {
+  getData = (recipes = jsonRecipes) => {
     return new Promise((resolve) => {
       let data = []
 
@@ -57,6 +60,19 @@ class DataList {
       })
 
       resolve(sortAlphabetically(data))
+    })
+  }
+
+  updateData = async (e) => {
+    const { updatedRecipes } = e
+    const data = await this.getData(updatedRecipes)
+
+    this.list.forEach((l) => {
+      l.classList.add("hidden")
+
+      data.forEach((d) => {
+        if (d === l.textContent) l.classList.remove("hidden")
+      })
     })
   }
 

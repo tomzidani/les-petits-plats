@@ -61,6 +61,8 @@ class List {
       })
     })
 
+    this.updateDatalists()
+
     this.nodeRecipes = await this.displayRecipes()
   }
 
@@ -116,8 +118,10 @@ class List {
    */
   resetRecipes = async () => {
     this.currentRecipes = this.recipes
-
     this.nodeRecipes = await this.displayRecipes()
+
+    const listElements = document.querySelectorAll(".datalist__list > ul > li")
+    listElements.forEach((l) => l.classList.remove("hidden"))
   }
 
   /*
@@ -132,6 +136,16 @@ class List {
 
       this.el.innerHTML = messageEl
     })
+  }
+
+  /*
+   * Dispatch an event to update the content of datalists.
+   */
+  updateDatalists = () => {
+    const e = new Event("updatelist")
+    e.updatedRecipes = this.currentRecipes
+
+    this.el.dispatchEvent(e)
   }
 }
 
