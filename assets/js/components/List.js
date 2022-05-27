@@ -53,31 +53,23 @@ class List {
         results.push(r)
     }
 
-    results = results.length ? results : this.currentRecipes
+    this.currentRecipes = val.length >= 3 ? results : this.currentRecipes
 
     // Tags search
-    for (let i = 0; i < this.tags.length; i++) {
-      const t = this.tags[i]
+    this.tags.map((t) => {
       const tVal = t.name.toLowerCase()
       const tType = t.type
 
-      for (let n = 0; n < results.length; n++) {
-        const r = results[n]
+      this.currentRecipes = this.currentRecipes.filter((r) => {
         const rVal = r[tType]
 
-        if (Array.isArray(rVal)) {
-          if (typeof rVal === "object") {
-            if (isPartiallyInArrayObject(rVal, tVal, "ingredient")) results.splice(results.indexOf(r))
-          } else {
-            if (isPartiallyInArray(rVal, tVal)) results.splice(results.indexOf(r))
-          }
-        } else {
-          if (rVal.toLowerCase().includes(val)) results.splice(results.indexOf(r))
-        }
-      }
-    }
-
-    this.currentRecipes = results
+        return Array.isArray(rVal)
+          ? typeof rVal === "object"
+            ? isPartiallyInArrayObject(rVal, tVal, "ingredient")
+            : isPartiallyInArray(rVal, tVal)
+          : rVal.toLowerCase().includes(tVal)
+      })
+    })
 
     this.updateDatalists()
 
