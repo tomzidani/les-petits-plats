@@ -40,10 +40,15 @@ class List {
     if (val.length < 3 && isEmpty(this.tags)) return
 
     // Query search
-    this.currentRecipes = this.currentRecipes.filter(
-      (r) =>
-        r.name.toLowerCase().includes(val) || r.description.toLowerCase().includes(val) || isPartiallyInArrayObject(r.ingredients, val, "ingredient")
-    )
+    this.currentRecipes =
+      val.length >= 3
+        ? this.currentRecipes.filter(
+            (r) =>
+              r.name.toLowerCase().includes(val) ||
+              r.description.toLowerCase().includes(val) ||
+              isPartiallyInArrayObject(r.ingredients, val, "ingredient")
+          )
+        : this.recipes
 
     // Tags search
     this.tags.map((t) => {
